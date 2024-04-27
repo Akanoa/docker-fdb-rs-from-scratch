@@ -1,0 +1,11 @@
+services:
+  foundationdb:
+    environment:
+      FDB_NETWORKING_MODE: container
+    image: foundationdb/foundationdb:7.3.27
+    hostname: "foundationdb"
+    ports:
+      - "4500:4500"
+  lab:
+    build:
+      dockerfile: Dockerfile
