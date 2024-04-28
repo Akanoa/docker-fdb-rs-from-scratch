@@ -6,6 +6,11 @@ services:
     hostname: "foundationdb"
     ports:
       - "4500:4500"
+  cli:
+    build:
+      dockerfile: cli.dockerfile
+    stdin_open: true
+    tty: true
   lab:
     build:
-      dockerfile: Dockerfile
+      dockerfile: app.dockerfile
