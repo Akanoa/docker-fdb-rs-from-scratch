@@ -20,8 +20,6 @@ RUN cargo build --release
 RUN chmod +x target/release/docker-fdb
 
 #https://gist.github.com/bcardiff/85ae47e66ff0df35a78697508fcb49af?permalink_comment_id=2078660#gistcomment-2078660
-
-
 RUN ldd target/release/docker-fdb | tr -s '[:blank:]' '\n' | grep '^/' | \
     xargs -I % sh -c 'mkdir -p $(dirname deps%); cp % deps%;'
 
