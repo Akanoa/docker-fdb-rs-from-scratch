@@ -7,6 +7,11 @@ RUN apt update &&  \
     dpkg -i foundationdb-clients_7.3.27-1_amd64.deb && \
     rm foundationdb-clients_7.3.27-1_amd64.deb
 
+RUN wget https://github.com/upx/upx/releases/download/v4.2.3/upx-4.2.3-amd64_linux.tar.xz && \
+    tar -xJf upx-4.2.3-amd64_linux.tar.xz && \
+    mv upx-4.2.3-amd64_linux/upx /usr/bin/upx && \
+    rm -fr upx-4.2.3-amd64_linux
+
 RUN  cat <<EOF > /etc/foundationdb/fdb.cluster
 docker:docker@foundationdb:4500
 EOF
@@ -16,12 +21,17 @@ WORKDIR build
 ADD Cargo.toml Cargo.toml
 COPY src src/
 
+
 RUN cargo build --release
-RUN chmod +x target/release/docker-fdb
 
 #https://gist.github.com/bcardiff/85ae47e66ff0df35a78697508fcb49af?permalink_comment_id=2078660#gistcomment-2078660
 RUN ldd target/release/docker-fdb | tr -s '[:blank:]' '\n' | grep '^/' | \
     xargs -I % sh -c 'mkdir -p $(dirname deps%); cp % deps%;'
+
+RUN upx target/release/docker-fdb
+RUN chmod +x target/release/docker-fdb
+
+RUN upx --best deps/lib/libfdb_c.so
 
 ENTRYPOINT ["top", "-b"]
 
