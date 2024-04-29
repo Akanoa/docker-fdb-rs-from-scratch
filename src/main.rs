@@ -30,7 +30,7 @@ async fn run(cluster_path: &str) -> eyre::Result<()> {
         Ok(())
     })
     .await?;
-    println!("I was here");
+    println!("I was here 666");
 
     Ok(())
 }

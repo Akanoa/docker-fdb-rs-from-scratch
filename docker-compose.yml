@@ -16,3 +16,8 @@ services:
       dockerfile: app.dockerfile
     stdin_open: true
     tty: true
+  user:
+    build:
+      dockerfile: user.dockerfile
+    stdin_open: true
+    tty: true
